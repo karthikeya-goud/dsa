@@ -1,0 +1,1030 @@
+H: DATA TYPE SIZES
+---------------------
+
+
+
+H: BIT WISE OPERATION
+-----------------------
+#dsa\bit_wise folder
+
+1Q. 2^N  ?
+1Ans.
+    #pow2.py
+
+    i. just iterate form {[1,N],[0,N)} 
+        if n>=0 and n<=62 (if long datatype) if unsigned n<64,
+        if n=100? then it should be big Integer
+
+        TC: N , SC: 1
+    
+
+    ii. doing left shift 1<<n 
+        ((long)1)<<N;
+        if n>=0 and n<=62 (if long datatype) if unsigned n<64,
+        if n=100? then it should be big Integer
+
+        TC : 1 SC: 1
+        
+    
+    note: no problem in python
+
+
+2Q. check bit 
+2Ans. 
+    # checkbit.py
+
+    i. right shift the n with b hen check bit is 1 or 0
+        (n>>b)&1 or (n>>b)%2
+    
+    ii. left shift 1 with b then check result is 1<<b or 0
+        (1<<b)&n!=0 or (1<<b)&n==(1<<b)
+    
+    TC : 1, SC : 1
+
+3Q. count set bits in given number n
+3Ans.
+    #count_set_bits.py
+
+    i. iterate each bit from right to left,
+        check each bit is 1 or 0
+        if bit is 1
+            increment the count         # same as checkbit
+        
+        TC : 31*1 , SC: 1
+    
+    ii. check the logN value so to get exact number of iterations
+        so logN base 2 gives the msb of the setbit 
+
+        TC : logN , SC : 1
+    
+    iii. if we do N&(N-1) which will unset the lsb
+
+        TC : Number pf setbits , SC : 1
+
+4Q. check if number N is power of 2 or not?
+4Ans. 
+
+    i. if N&(N-1) is 0 then it is power of 2
+
+        TC : 1 , SC : 1
+    
+    ii. iterate and check how many bits are set
+        if setbits count==1 then yes
+        else no
+
+        TC: logN+1 , SC: 1
+
+5Q. create a number where xth and yth bit are 1
+5Ans. 
+
+    i. given x and y bit position
+        (1<<x)+(1<<y) if x!=y ----> wrong if x==y
+        (1<<x)|(1<<y) if x=y and x!=y
+    
+    ii. pow2(x)|pow2(y)
+
+    TC : 1, SC:1
+
+6Q. create a number where we have X no of 1's followed by Y no of 0's
+6Ans.
+    #generate_x1s_y0s.py
+
+    i. we know
+        the no of bits will X+Y
+        so 1<<(x+y) give 2^(x+y) but we need 1's so we do -1
+        (1<<(x+y)-1)
+        now to get y we do (1<<y-1) we get all y 1's
+        so AND &  them
+
+        (1<<(x+y)-1)-(1<<y-1)
+    
+    ii. (pow2(x+y)-1) - (pow2(y)-1)
+        or
+        (1<<(x+y)-1) - (1<<y)
+
+    TC : 1, SC: 1
+
+    iii. loop from i=y,i<=(x+y-1);i++=> ans=ans+(1<<i)
+         x=3 y=3
+            111000
+            1 starts from 3rdbit(y) to 5th bit so (x+y-1)
+    
+    iV. (pow2(x)-1)<<y
+
+    V. (1<<(x+y)-1)^(1<<y)
+
+
+7Q . compute A^N
+7Ans.
+    #apowN.py
+
+    i. loop upto [1,N] times
+       multpliy A for each iteration to ans
+
+       TC : N, SC : 1
+    
+    ii. N can represent in binary
+
+        so when bit is set we muliply with A(setbit)^(position) to answer
+        we can use checkbit also
+
+        TC : 32 or MSB of setbit => logN base2, SC : 1
+    
+    iii. using recursion
+
+        a^N = a*a^(n-1)     # T(n)=T(n-1)+1
+
+        if n==0 return 1    #T(n)=1
+
+        so TC will be 
+        ------------
+        T(n-2)+2
+        T(n-3)+3==> T(n-k)+K
+        n=k==> 1+N
+
+        TC : N + 1 , SC : N
+
+    iV. using recursion other logic
+
+        a^N=a^(n/2)*a^(N/2)=>2*a^(N/2) if n is even
+                            =>2*a^(N//2)*a if n is odd
+
+        if n is even 
+            2*f(a,n/2)
+        else:
+            2*f(a,n//2)*a          
+        
+                            # T(N/2)
+        if n==0 return 1    #1
+
+        TC
+        ------
+        T(n/4)+2
+        T(n/8)+3==> T(n/2^k)+k
+        2^k=n,logN=k
+
+        logN+1
+
+        TC : logN+1 , SC : N/2
+
+
+    Note : we consider N>=0
+
+
+
+SH. Modulous
+--------------
+
+1. (a*b)%m = (a%m * b%m)%m
+   (a*b*c)%m = ((a*b)%m * c%m)%m
+               ((a%m * b%m)%m *c%m)%m
+               or 
+               (a%m * b%m * c%m)%m 
+               gives same result but in computer to overcome overflow we use above one
+
+2. (a+b)%m = (a%m + b%m)%m
+
+3. (a-b)%m = (a%m - b%m + m)%m
+
+4. (a/b)%m = (a*b^(-1))%m we need to do inverse modulo concept
+
+
+
+8Q. GCD
+8Ans. 
+    #gcd.py
+
+    i. using recurrsion, same for the loop
+        
+        a,b=b,a%b
+        base condition b=0
+
+
+9Q. Count the Divisiors
+9Ans. 
+    #count_divisors.py
+
+    i. Just Loop from 1 to N count the Divisiors
+        TC : N, SC: 1
+    
+    ii. Found a pattern that it 
+        A X B = N
+        so the count is 2
+        exception A X A = N here the count is 1
+
+
+10Q. linear Search
+10Ans.
+    #linearsearch.py
+
+    i. loop ,extract each element check with key
+        if found True else False
+
+        TC : N, SC : 1
+
+11Q. In list , every element repeated twice except one return that
+11Ans. 
+    #repeated2.py
+
+    i. loop from 0..N 
+            for each element count the occurance
+
+            if count is 1 return the element
+        
+        TC : N*N , SC : 1
+    
+    ii. Using count array, 
+        loop the element increment the count
+
+        now loop the count array which count is 1
+        return the element
+
+        TC : N+N , SC : N
+
+        Note: space contraints will be there
+    
+    iii. Using HashSet
+
+        loop each element 
+            if element not in hashset, then push
+            if already there pop them 
+
+            at last the element which count is 1 will be the answer
+        
+        TC : N+1 , SC : length of unique set of N or N//2
+    
+    iV. instead of Count array use HashMap
+        to overcome space constraint
+
+        TC : N+N , SC : N
+    
+    V: using XOR
+        xor will cancel the repeated numbers
+
+        TC : N , SC : 1
+    
+    Vi. Sorting then checking the next or prev element
+        if current element wont match next or prev
+        then it will be ans
+
+        sorting 
+        curr!=next return curr
+        if same then update curr=curr+2
+
+        TC : NlogN + N//2 , N
+
+
+12Q. Given array where each element 3 times except one?
+12Ans.
+
+    #repeated3.py
+
+    i. loop from 0..N 
+            for each element count the occurance
+
+            if count is 1 return the element
+        
+        TC : N*N , SC : 1
+    
+    ii. Using count array, 
+        loop the element increment the count
+
+        now loop the count array which count is 1
+        return the element
+
+        TC : N+N , SC : N
+
+        Note: space contraints will be there
+    
+    iii. instead of Count array use HashMap
+        to overcome space constraint
+
+        TC : N+N , SC : N
+    
+    iV. Sorting then checking the next,next or prev,prev or next,prev element
+        if current element wont match next or prev
+        then it will be ans
+
+        sorting 
+        start from index 1
+        curr!=next and curr!=prev return curr
+        
+        checking prev curr next
+        [1 1 1 2 2 2 3 4 4 4 5 5 5 8 8 8]
+                       ^
+        if left is not same right is same the return the left element 
+        if same then update curr=curr+3
+
+        TC : NlogN + N//3 , N
+    
+    V. we can construct the number , by using bits
+        based on the bit position we categorize the elements we can see
+        one side will have elemnts which divide by 3 other side we have 1 extra elemrnt
+
+        based on the extra elemnt we construct the number
+
+        elemnts>=0
+
+        TC : 31*N , SC : 1
+
+13Q. we have list of elements , in range of [1,N] 
+        one is missing one is repeated? 
+        find missing and repeated one?
+
+13Ans.
+    #missing_repeated.py
+
+    i. loop from 1 to N 
+        if any one element is not present   # same as Linear Search
+            it will be missing value
+        
+        count each value
+            if count is 2 then it will be repeated
+        
+
+        Tc : N*N+N*N, SC : 1
+    
+    ii. sort the elements
+         find the missing and check curr and next value
+
+         TC : NlogN + N + N , SC : N
+    
+    iii. make a count array
+        loop each element increse count 
+
+        from [1,N], if in between any 0 is present then it is missing if count==2 it os repeated
+
+
+        TC : N + N , SC : N+1
+    
+    iV. using hash set
+        insert if not there if present
+        then it is repeated
+        
+        loop the set check for missing one
+
+        TC : N+N , SC : N
+    
+    V. using HashMap
+        insert it value and count
+
+        loop find missing and repeated
+
+        TC : N+N , SC : N
+    
+    Vi. Xor with list element with 1..N elements
+        we get xor of missing and repeated value
+
+        and we know xor result value if bit is set then 2 values are different
+        so pick one set bit value
+        make 2 buckets and keep list and 1..N elements
+
+        we get repeated one and missing one but we dont know
+        which is repeated and missing 
+        so run a linear Search on one value if found it is repeated else missing
+
+
+        TC : N+N+N , SC : 1
+
+
+14Q. find the subset Sum
+14Ans.
+    #subsetsum.py
+
+    i. for each subset calculate the Sum
+        if total sum=k then true else False
+        printed the path too
+        
+        TC : 2^n * 31 , SC : 1
+    
+    ii. using backtracking
+        take or leave element find sum
+        printed the path too
+
+        TC : 2^N , SC : 1
+
+
+H: Recursion
+-----------------
+# dsa/recursion
+
+
+15Q. Sum of 1..N numbers
+15Ans.
+
+    #sum_of_n.py
+
+    i. loop from 1 to N # N 
+        add them # 1
+    
+        TC : N*1 , SC : 1
+
+    ii. using Formula 
+
+        N*(N+1)//2
+
+        TC : 1 , SC : 1
+    
+    iii. using recursion
+
+        Sum(N-1)+N          # T(N-1)+1
+        if n==0 return 0    # 1
+
+        TC calculation
+        ---------------
+        T(N)    =T(N-1)+1, if T(0)=1  # here '1' refers 1 step
+                =T(N-2)+2
+                =T(N-3)+3
+        .........
+                =T(N-K)+K
+        .......
+        T(0)=1
+
+        Eq1 : T(N-k)+k
+        for k=N
+
+        T(N-N)+N = T(0)+N ==> 1+N
+        
+        so TC : N
+        and Sc : will be 1 memory cell for each record in stack so N
+
+        TC : N , SC : N
+
+16Q. Factorial of N
+16Ans. 
+
+    #factorial_n.py
+
+    i. loop from 1..N           # N
+            multpily with ans   #1
+        
+        TC : N*1 , SC : 1
+    
+    ii. using recursion 
+
+        fact(n-1)*n         # T(n-1)+1
+        if n==0 or n==1     # 1 
+            return 1
+        
+        TC
+        --------
+        T(n)=T(n-1)+1
+            =T(n-2)+2
+            =T(n-k)+k
+        
+        we know T(0)=1
+        so n-k=0==> k=n
+
+        T(n-n)+n
+        T(0)+n ==> 1+N
+
+        TC : N+1 , SC : N
+
+17Q. sum of AP(Arithmetic progression)
+17Ans.
+    #ap_sum.py
+
+    a+ a+d + a+2d + a+3d ........ a+(n-1)d
+
+    i. loop from 1..N-1         #N
+        mutlipy and add it      #1
+
+        TC: N*1 , SC : 1
+    
+    ii. using recursion
+
+        (a+n*d) + f(a,n-1,d)    # 1 + T(N-1)
+        if n==0 return 0        # 1
+
+        or
+
+        a + f(a+d,n-1,d)        #1+ T(N-1)
+        if n==0 return 0        # 1
+
+
+        TC : N+1, SC : N
+    
+    iii. using Formula
+            Sn=n/2(2a + (n-1)*d)
+        
+        TC : 1 , SS : 1
+
+18Q. Fibonacci Series
+18Ans. 
+    #fibonacci.py
+
+    i. we know start 2 values 1,1 (it may start with 0 too or any)
+
+        loop n-2 steps                  #N
+            compute sum                 #1
+            update pointer 
+        
+        TC : N*1 , SC : 1
+    
+    ii. using recursion
+
+        f(n-1)+f(n-2)                   # T(N-1)+T(N-2)
+        if n==1 or n==2:
+            return 1                    #1
+        
+
+        TC
+        ---------
+        T(n)=T(n-1)+t(n-2)+1        it is recursive there
+
+                        t(n)
+        t(n-1)               t(n-2)             1       ===> 1
+    t(n-2)  t(n-3)      t(n-3)  t(n-4)          2
+t(n-3) (tn-4)  t(n-4) t(n-5)...                 4
+                                                ..
+    
+    we see 1+2+4+..+2^(n-1)
+
+    sum of GP       a*(r^n -1)/r-1
+    so 
+    1*(2^n -1)/2-1 ==> 2^N -1
+
+    TC : 2^N -1 , SC : N
+
+
+19Q. Tower of Hanoi
+19Ans. 
+    #tower_of_hanoi.py
+
+    i. using recursion
+        we have src,temp,dest
+        f(src,des,temp)
+
+            to move Nth disk to des ,we have to move all n-1 to temp
+            f(n-1,src,temp,des)     #T(n-1)
+
+            now we free to move         
+            N : src -> des          #1
+
+            now move n-1 in temp to des
+            f(n-1,temp,des,src)     #T(n-2)
+        
+            if n==0 no move or disc return  #1
+
+            TC : 
+            -----------
+            T(n)=2T(N-1)+1
+
+            2*KT(N-k)+2^K-1
+            k=n-k=0=> k=N
+
+            2^N*1+2^N-1
+            2^(N+1)-1
+
+            TC : 2^(N+1)-1 , SC : N 
+
+
+20Q. See apowN 7Q
+
+21Q. find the subset Sum see (14Q)
+21Ans.
+    #subsetsum.py
+
+    i. with bit manipulation (2^N)*N,1
+
+    ii. using recurrsion
+
+        generate subset check with K
+        once take the element once dont take it
+
+        f(list,k,n,sum,idx)
+        we reduce paramters sum and making k to 0
+
+        f(list,k,idx)
+        we go from right to left so we check at -1
+
+        f(list,k,idx)
+
+        
+        f(list,k-list[idx],idx-1) # take value    T(n-1)
+                    ||  # if any one true it stops the call of other
+        f(list,k,idx-1)   #dont take              T(n-1)
+
+
+        if idx=-1
+            if k==0 return true else False      1
+
+        so Tc :
+        ------------
+        T(n)=2T(n-1)+1
+
+
+        TC : 2^N , SC : N
+
+
+22Q. print number of Balanced parathesis of size N in lexicographical
+22Ans.
+    #balanced_parathensis.py
+
+    i. using backtracking
+        n=4
+        (()),()()
+
+        so we need 
+        n , empty str,open count ,closed count
+
+        if open count < n/2 
+            then append '('
+            and make call
+        
+        if closed count < open count then
+            append ')'
+            make call
+        
+        
+
+        if length of str and n equal then print str
+
+        catalan number : 2N
+                            CN/N+1
+        TC : catalan Number , SC : 1
+
+
+23Q. construct matrix(magic square) 3x3 , sum of each row ,col,diag sum is equal,numbers 1 to 9, 
+
+actual question convert given matrix to magic square and find minimum cost,abs(ms[i][j]-a[i][j])
+23Ans.
+    #magicsquare.py
+
+    1+2+3+4+5+6+7+8+9=45/3=15
+
+    i. first generate magic square and check with given matrix find sum
+
+        generated all valid permuatations of magic square
+        using backtracking taking 
+        
+        TC : N*N! , SC : N
+        here N=9 fixed
+
+        for each input array check cost
+        print the minimum cost
+
+        TC : 9*9! + T*(Number of valid permuations) , SC : N+number of permuatations + 1
+
+
+24Q. String Interleavings
+        AB PQRS
+
+        output ABPQRS,APBQRS.....
+
+24Ans. 
+    #interleavings.py
+
+    i. here we shouldnt break the order so and print in sorted order
+
+        based on the index i for s1 and j for s2
+        we picl smallest one then genrate other using backtracking
+
+        total interleaving we get is (m+n)!/(m!xn!)
+        TC : (m+n)!/(m!xn!),m+n
+
+
+H. SORTING
+--------------
+
+
+25Q. There are N voters voted to one of M candidate , M candidates , find who got more votes
+
+25Ans.
+    #NvotersMcandidates.py
+    
+    i. for each candidate #M
+        count the how many people voted # N
+
+        TC : M*N , SC : 1
+    
+    ii. taking count array from 1 to M,
+        iterate N #N
+            increment the count array #1
+        
+        iterate and find max #M
+        
+        TC : N*1 + M , SC: M
+    
+    iii. using hashmap so space wont effect
+
+        iterate N # N
+            update hash map # 1
+        
+        iterate HashMap and find max # M
+
+        TC : N+M, SC : M
+    
+    iV. Sort the A values, # NlogN,M
+        then 2 pointer to check lenght of same numbers # N
+            update the max one
+        
+
+        TC : NlogN + N , SC : N
+
+
+26Q. Given the count array , make a sorted array
+26Ans. 
+    #countToArray.py
+    i. take the array index=0
+        iterate the count array of size M # M
+            for value in count, # 
+                update array
+                increment the count
+            
+            Note : this for loop take a total N steps only
+        
+        TC : M + N , SC : 1
+    
+
+Note: 25 and 26 Q give idea on COUNT SORTING
+
+27Q. Count Sort see about logics
+27Ans. 
+     #countsort.py
+
+     i. we see min and max value#N+N
+        we construct count array of lenght b-a+1
+        iterate and increment count #N
+        construct the array # R+N
+
+        TC : N+N + R+N , SC : R
+
+        Note R can be range upto 10**(6 or 7)
+                it exceeds space limits
+        at total of 10**7 elements we can take
+
+28Q. Bubble sort
+28Ans.
+    #bubblesort.py
+
+    i. for each size of 1..N: # N
+        keep the max element to last # N
+    
+    TC : N*N , SC : 1
+
+29Q. Selection Sort
+29Ans.
+    #selectionsort.py
+
+    i. for each 1..N #N
+        find either pick small or big element #N
+            update eitherr small number or big number by swap
+    
+        Tc : N*N , SC : 1
+
+30Q. Insertion Sort
+30Ans.
+    #insertionsort.py
+
+    i. for each 1..N: #N
+        treat side side is sorted: #N 
+            insert the element  according to its place
+        
+        TC : N*N , SC : 1
+
+
+31Q. Sort the 0's and 1's
+31Ans.
+    #sort01s.py
+
+    i. Give to sorting algo takes 
+        TC : N*N , SC : 1
+    
+    ii. Give to Merge or Quick Sort 
+        TC: NlogN SC : N or 1
+    
+    iii. using count array or 2 variables
+        
+        iterate N count 0's or 1's #N
+        
+        get N-count of 0's or 's we get other count
+
+        loop count of 0's and insert#N-count of 1's
+        loop count of 1's and insert#count of 1's
+
+        TC : N+ (N-C1)+ C1 , SC : 2*1 
+    
+    iV. using 2 pointers
+        both are at ends
+
+        p1 will stop when it sees 1
+        p2 stops when it see 0
+        swap them continue increment p1 and decrement p2
+        when p1<=p2: stop
+
+        TC : N , SC : 1
+
+32Q. Given 2 array A of N,B of M size are storted print the sorted elements
+32Ans. 
+    #ABsorted.py
+
+    i. take temp=[]
+        append A elements # N
+        append B elements # M
+
+        sort using Sorting algos # (N+M)**2
+
+        TC : N+M +(N+M)**2 , SC : N+M
+    
+    ii. using merge or quick sort
+        take temp=[]
+        append A elements # N
+        append B elements # M
+
+        sort using Sorting algos # (N+M)log(N+M)
+
+        TC : N+M +(N+M)log(N+M) , SC : N+M + ((N+M) or 1)
+
+    iii. using count sort 
+        find min and  max for efficent else give it
+
+        construct a count array
+
+        iterate  A and B and update count array # N+M
+        terate the count array # R
+            consurt the array # N+M only
+        
+        TC :  N+M + R+(N+M) , SC : R
+    
+    iV. using 2 pointers
+
+        place p1 at start of A , p2 at start of B
+
+        check p1 and p2 print or smaller one
+        increment the smaller value index
+
+        when p1>=N print all p2 to M elements
+        when p2>=M print all p1 to N elements
+
+        TC : N + M , SC : 1
+    
+    V.  Take a temp array of size N+M , 
+        insert all N elements #N
+        Assuemm A is sorted insert B elements in B in temp
+            # M*N , N bcoz elemnts can move N times at max
+        
+        TC : N+M*N , SC : N+M
+
+33Q. Given 2 array A of N,B of M size are storted print the sorted elements
+
+33Ans.
+    #ABsortedModifed.py
+
+    i. 
+        store M values in A after (N-M) values from A
+        sort them
+
+        TC : M + (N)**2 , 1
+    
+    ii. think A is sorted 
+        do insertion sort
+        for each in B :#M
+            insert at coorect place # (N-M) values moves
+        
+        TC : M*(N-M),1
+    
+    iii. using 2 pointers
+        and temp array of size N
+        p1 at 0 of A , p2 at 0 of B
+        store the smaller one in temp
+        update the Array A
+
+        TC : (N-M) + M + N , Sc : N
+    
+    iV. Using 2 pointers
+        p1 at N-M place, p2 at M , and idx at N-1 place
+        place the bigger one at idx 
+        decrement p1,p2,idx
+
+        TC: (N-M) + M , SC : 1
+
+
+34Q. Merge Sort
+34Ans.
+    #mergesort.py
+
+    i. split are the array to half
+        until u get 1 sorted element (if we get 1 element it is sorted)
+
+        now merger the 2 sorted array to get sorted array
+
+        TC : NlogN , Sc : N
+    
+
+35Q. count total elements whose i<j and a[i]>a[j] (INVERSION COUNT)
+35Ans.
+    #countij.py
+
+    we can get 0<=x<=n*(n-1)/2 inversion counts
+    we can make 4 problems 
+    i>j , a[i]>a[j]
+    i>j , a[i]<a[j]
+    i<j , a[i]>a[j]
+    i<j , a[i]<a[j]
+
+    for i<j and a[i]>a[j] we did
+
+    i. loop from 1..N   # N
+        c=0
+        for i+1..N      #N
+            increment count if a[i]>a[j]
+        
+        Tc: N*N , SC : 1
+    
+    ii. using mergesort approach at merge step
+
+        update the ans+=(m-p1+1)
+
+        Note Handle the == case
+
+        TC : NlogN , Sc : N
+
+
+36Q. a+b=K , i!=j
+35Ans.
+    #ABK.py
+
+    i. for each in N: #N
+        for each in N: #N
+            if a+b=K return True
+
+        TC: N*N , SC : 1
+    
+    ii. sort the Array # NlogN,N
+        place 2 pointers
+        if p1+p2>k:
+            p2--
+        if p1+p2<K
+            p2++
+        if equal return true
+        stop when p1>p2
+
+        TC: NlogN + N , SC : N
+    
+
+36Q. a+b+c=k
+35Ans.
+    #ABCK.py
+
+    i. for each in N: #N
+        for each in N: #N
+         for each in N
+            if a+b+c=K return True
+
+        TC: N*N*N , SC : 1
+    
+    ii. sort the Array # NlogN,N
+        a+b=k-c=k'
+        so for each in N for new k'
+            place 2 pointers
+            if p1+p2>k:
+                p2--
+            if p1+p2<K
+                p2++
+            if equal return true
+            stop when p1>p2
+
+        TC: NlogN + N*N , SC : N
+
+
+36Q. Quick Sort 
+36Ans.
+    #quicksort.py
+
+    i. in quick sort 
+
+        we pick a pivot elemnt, 
+
+        we make all samller values of pivot to left, all greater values to right
+
+        then sort left and right as same by choosing pivot
+
+        we can choose first, last , random pivot
+
+
+37Q. a-b=K
+37Ans. 
+    #ABkminus.py
+
+    i. for each index in A  #N
+        for each index in A #N
+            if a[i]-a[j]=k return True
+        
+        TC : N*N , SC : 1
+    
+
+    ii. a-b=k
+        sort the Array # NlogN,N
+        place 2 pointers
+        p1=0
+        p2=1
+        check 
+        if p2-p1<k:
+            p2++
+        if p1+p2<K
+            p1++
+        if equal return true
+        stop when p1 or p2 is out of N
+
+        TC: NlogN + N , SC : N
