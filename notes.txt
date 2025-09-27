@@ -942,7 +942,7 @@ Note: 25 and 26 Q give idea on COUNT SORTING
 
 
 36Q. a+b=K , i!=j
-35Ans.
+36Ans.
     #ABK.py
 
     i. for each in N: #N
@@ -963,8 +963,8 @@ Note: 25 and 26 Q give idea on COUNT SORTING
         TC: NlogN + N , SC : N
     
 
-36Q. a+b+c=k
-35Ans.
+37Q. a+b+c=k
+37Ans.
     #ABCK.py
 
     i. for each in N: #N
@@ -988,8 +988,8 @@ Note: 25 and 26 Q give idea on COUNT SORTING
         TC: NlogN + N*N , SC : N
 
 
-36Q. Quick Sort 
-36Ans.
+38Q. Quick Sort 
+38Ans.
     #quicksort.py
 
     i. in quick sort 
@@ -1003,8 +1003,8 @@ Note: 25 and 26 Q give idea on COUNT SORTING
         we can choose first, last , random pivot
 
 
-37Q. a-b=K
-37Ans. 
+39Q. a-b=K
+39Ans. 
     #ABkminus.py
 
     i. for each index in A  #N
@@ -1028,3 +1028,185 @@ Note: 25 and 26 Q give idea on COUNT SORTING
         stop when p1 or p2 is out of N
 
         TC: NlogN + N , SC : N
+
+
+
+H. SEARCHING
+--------------------
+
+
+40Q. linear Search
+40Ans. 
+    #linearsearch.py
+
+    i. iterate each lement in array #N
+        if it matche with key true
+
+    TC : N , SC : 1
+
+
+41Q. Binary Search
+41Ans.
+    #binarysearch.py
+
+    i. array should be sorted
+
+        keep pointer at both the ends
+        find the mid
+        if mid==key return true
+        if mid is greater than key then decremnt the p2 to mid-1
+        else increment p1 to mid+1
+        do until low<high
+
+
+        TC : logN, SC : 1
+
+42Q. a+b=k where i not equal to j see 36Q
+42Ans.
+    #sorting/ABK.py
+
+    iii. sort the array # NlogN,N
+
+        fix one a or b
+        for elements in array #N
+            then a=k-b
+            then binary search for a #logN
+        
+        TC : NlogN + N*logN  , SC : N
+    
+    for a+b+c=k 37Q
+    #sorting/ABCK.py
+    iii. sort the array #NlogN,N
+        c=k-a-b
+        find c iterate a , b, 
+
+        for i in array #N
+            for j in array from i+1 #N
+                c=k-(i+j)
+
+                do binary search on c #logN
+        
+        TC : NlogN + N*N*logN , SC : N
+    
+    for a-b=k
+    #sorting/ABkminus.py
+
+    iii. sort the array # NlogN,N
+            we do a=k+b
+            for each elemnt in array # N
+                a=k+a[i]
+                do binary search #logN
+        
+        TC : NlogN + N*logN , SC : N
+
+43Q. given an array and Q queries find the x where x is max(ar)<=x
+43Ans. 
+    #max_x_in_array.py
+
+    ex: 
+    A: 12 21 15 -3 10 8 5 29 18
+    Queries:
+        x   : 14 0  10 -15
+        ans : 12 -3 10 int_min
+    
+    i. 
+        take the query x
+        ans=int min 
+        iterate through array   #N 
+            compare the elemrnt find the best answer
+            if a[i]<=x: ans=max(ans,a[i])#1
+        
+        TC : Q*(N*1), SC : 1
+    
+    ii. sort the array #NlogN ,N
+
+        for each query x, #Q
+            we do modified binary search 
+
+            if a[m]>x: ingore the right
+            take the left best answers #logN
+        
+
+        TC : NlogN + Q*logN , SC : N
+
+
+44Q. given array , and q queries find the count of x
+44Ans.
+    #count_of_x.py
+
+    ex: A : 3 10 8 15 10 10 -2 15 3 -5 3 10 25 10 -5
+
+    q   : 10 20 15 8 10
+    ans : 5  0  2  1 5
+
+    i.
+        for each query # Q
+            iterate the array # N
+                increment count
+        
+        TC : Q*N*1 , SC : 1
+    
+    ii.
+        using count array
+        create a array of size R
+
+        iterate the array # N
+            increment the count #1
+        
+        for each query # Q
+            print the count from count array# 1
+        
+        note: we can use hashmap intead of count array
+
+        TC : N + Q*1 , R
+
+    iii. using binary search
+
+        sort the Array # NlogN
+
+        for each query #Q
+            do a modified binary search
+
+            find the index of left most(first occurance) value of x  #logN 
+            find the index of right most(right occurance) value of x #logN
+
+            ans=r-l+1
+            initsial l=0 and r=-1 so when no search found count =0 
+        
+                                  7              11
+        [-5, -5, -2, 3, 3, 3, 8, 10, 10, 10, 10, 10, 15, 15, 25]
+                                 l                r
+        r-l+1 give counts of 10's
+
+        TC : NlogN + Q*(logN+logN), Sc : N
+    
+
+    iV. we can sort array  #NlogN,N
+        then create a array #N
+        A: -5 -2 3 8 10 15 25 #N
+        B:  2  1 3 1  5 2  1 #N
+
+        now for each query #Q
+            do a binary search on a and finde index #logN
+            print b[ans] else print 0
+        
+        TC : NlogN + N + Q*(logN+1), Sc: N + (N + N)
+    
+    V. sort the array # NlogN,N
+        sort the queries # QlogQ
+
+        pointer to 0th index of both queries and array
+
+        now we count by increment pointers
+            p1  
+        A : -5 -5 -2 3 3 3 8 10 10
+            p2
+        B : -5 3 8 10 10 20
+
+        if p2<p1 then print 0 increment p2
+        if p1 and p2 are same increment p1 until it p2<p1
+            print count , increment p2
+        if p2==p1-1 then print previous count answers then increment
+
+
+        TC : NlogN + QlogQ + N + Q + Q*(logQ) , N + Q +(Q) queries that are storted + (Q)->storing queres answer array + Q (queries that not changed)

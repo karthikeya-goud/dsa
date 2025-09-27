@@ -6,7 +6,8 @@ def f1(a,k):
         for j in range(len(a)):
             for r in range(len(a)):
                 if i==j==r:continue
-                if a[i]+a[j]+a[r]==k:return True
+                if a[i]+a[j]+a[r]==k:
+                    return True
     
     return False
 
@@ -26,8 +27,29 @@ def f2(a,k):
             else:
                 p1+=1
     return False
+def binarysearch(a,k,l=0): 
+    h=len(a)-1
+    while l<=h:
+        m=(l+h)//2
+        if a[m]==k:
+            return True
+        elif a[m]>k:
+            h=m-1
+        else:
+            l=m+1
+    return False
+
+def f3(a,k):
+    a.sort()
+    for i in range(len(a)-2):
+        for j in range(i+1,len(a)-1):
+            c=k-a[i]-a[j]
+            if binarysearch(a,c,j+1):return True
+    return False
 
 
-a=[2,5,-5,2,99,12,34,56,-87,34,100,9,6]
-print(f1(a,k=106))#N*N*N, 1
-print(f2(a.copy(),k=106))#NlogN + N*N, N
+a=[2,5,-5,2,99,12,34,56,-87,34,100,9,500]
+k=126
+print(f1(a,k))#N*N*N, 1
+print(f2(a.copy(),k))#NlogN + N*N, N
+print(f3(a.copy(),k))#NlogN + N*N*logN, N
